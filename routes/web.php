@@ -13,6 +13,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::group(array('namespace' => 'Task','middleware' => ['auth']), function () {
+	Route::get('/', ['uses' => 'Dashboard@index'])->name('dashboard');
+	Route::get('task/create', ['uses' => 'Task@create'])->name('task.create');
+	Route::post('task/create', ['uses' => 'Task@store'])->name('task.store');
+	Route::delete('task/delete/{task_id}', ['uses' => 'Task@delete'])->name('task.delete');
+	Route::get('task/edit/{task_id}', ['uses' => 'Task@edit'])->name('task.edit');
+	Route::post('task/edit/{task_id}', ['uses' => 'Task@update'])->name('task.update');
 });
+
+
+
+require __DIR__.'/auth.php';
